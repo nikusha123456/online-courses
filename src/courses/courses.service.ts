@@ -11,6 +11,7 @@ import { GetCoursesFilterDto } from './dto/get-courses-filter';
 import { CreatePurchasedCourseDto } from './dto/purchased-courses.dto';
 import { purchasedCourse } from './entities/purchased-courses.entity';
 import { Category } from 'src/categories/entities/categories.entity';
+import { filter } from 'rxjs';
 
 @Injectable()
 export class CoursesService {
@@ -50,7 +51,6 @@ export class CoursesService {
     user: User,
   ): Promise<Course[]> {
     const { title, minPrice, maxPrice } = filterDto;
-    const course = Course;
     const query = this.coursesRepository.createQueryBuilder('course');
 
     query.where('course.user = :userId', { userId: user.id });

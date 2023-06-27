@@ -19,8 +19,8 @@ export class CreateCourseDto {
   @IsNotEmpty()
   price: number;
 
-  @IsArray()
-  @ArrayNotEmpty()
-  @ArrayMinSize(1)
-  categories: string;
+  // @IsArray()
+  // @ArrayNotEmpty()
+  // @ArrayMinSize(1)
+  // categories: string;
 }

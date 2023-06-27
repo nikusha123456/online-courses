@@ -22,11 +22,14 @@ export class Category {
   @Column()
   name: string;
 
-  @OneToMany(() => Category, (category) => category.parent)
+  @Column({ nullable: true })
+  parentId: number;
+
+  @OneToMany((_type) => Category, (category) => category.parent)
   @TreeChildren()
   children: Category[];
 
-  @ManyToOne(() => Category, (category) => category.children)
+  @ManyToOne((_type) => Category, (category) => category.children)
   @TreeParent()
   parent: Category;
 

@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { User } from 'src/auth/entities/user.entity';
 import { Exclude } from 'class-transformer';
@@ -30,7 +31,7 @@ export class Course {
   @Exclude({ toPlainOnly: true })
   user: User;
 
-  @ManyToOne(() => Category, (category) => category.courses)
+  @ManyToMany(() => Category, (category) => category.courses)
   @JoinTable()
   categories: Category[];
 }
