@@ -22,9 +22,6 @@ export class Category {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
-  parentId: number;
-
   @OneToMany((_type) => Category, (category) => category.parent)
   @TreeChildren()
   children: Category[];

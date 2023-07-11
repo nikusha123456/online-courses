@@ -50,23 +50,13 @@ export class CoursesService {
     filterDto: GetCoursesFilterDto,
     user: User,
   ): Promise<Course[]> {
-    const { title, minPrice, maxPrice } = filterDto;
+    const { title } = filterDto;
     const query = this.coursesRepository.createQueryBuilder('course');
 
     query.where('course.user = :userId', { userId: user.id });
     if (title) {
       query.andWhere('course.title LIKE :title', {
         title: `%${filterDto.title}%`,
-      });
-    }
-    if (minPrice) {
-      query.andWhere('course.price >= :minPrice', {
-        minPrice: filterDto.minPrice,
-      });
-    }
-    if (maxPrice) {
-      query.andWhere('course.price <= :maxPrice', {
-        maxPrice: filterDto.maxPrice,
       });
     }
     const courses = await query.getMany();
@@ -138,5 +128,37 @@ export class CoursesService {
 
   async getAllPurchasedCourses(): Promise<purchasedCourse[]> {
     return this.purchasedcoursesRepository.find();
+  }
+
+  async sortCoursesByPriceHighToLow(
+    page = 1,
+  ): Promise<{ courses: Course[]; totalCount: number }> {
+    try {
+      const [courses, totalCount] = await this.coursesRepository.findAndCount({
+        take: 9,
+        skip: 9 * (page - 1),
+        select: ['id', 'title', 'description', 'price'],
+        order: { price: 'DESC' },
+      });
+      return { courses, totalCount };
+    } catch (error) {
+      throw new NotFoundException('Courses not found');
+    }
+  }
+
+  async sortCoursesByPriceLowToHigh(
+    page = 1,
+  ): Promise<{ courses: Course[]; totalCount: number }> {
+    try {
+      const [courses, totalCount] = await this.coursesRepository.findAndCount({
+        take: 9,
+        skip: 9 * (page - 1),
+        select: ['id', 'title', 'description', 'price'],
+        order: { price: 'ASC' },
+      });
+      return { courses, totalCount };
+    } catch (error) {
+      throw new NotFoundException('Courses not found');
+    }
   }
 }

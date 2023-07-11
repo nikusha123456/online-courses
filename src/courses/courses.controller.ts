@@ -49,7 +49,7 @@ export class CoursesController {
   }
 
   @UseGuards(AuthGuard())
-  @Get()
+  @Get('/search')
   getCourses(
     @Body() filterDto: GetCoursesFilterDto,
     @GetUser() user: User,
@@ -97,5 +97,19 @@ export class CoursesController {
   @Get('/allpurchasedcourses')
   getAllPurchasedCourses(): Promise<purchasedCourse[]> {
     return this.coursesService.getAllPurchasedCourses();
+  }
+
+  @Get('/sort/high-to-low')
+  async sortCoursesByPriceHighToLow(
+    @Query('page') page: number,
+  ): Promise<{ courses: Course[]; totalCount: number }> {
+    return this.coursesService.sortCoursesByPriceHighToLow(page);
+  }
+
+  @Get('/sort/low-to-high')
+  async sortCoursesByPriceLowToHigh(
+    @Query('page') page: number,
+  ): Promise<{ courses: Course[]; totalCount: number }> {
+    return this.coursesService.sortCoursesByPriceLowToHigh(page);
   }
 }

@@ -18,7 +18,6 @@ export class CategoryService {
 
     const category = this.categoryRepository.create({
       name,
-      // id rogor mivutito
     });
     await this.categoryRepository.save(category);
     return category;
